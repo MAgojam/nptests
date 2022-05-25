@@ -1,0 +1,170 @@
+---
+name:  anovaNP
+title: One-Way ANOVA On Ranks
+
+menuGroup: ANOVA
+menuSubgroup: Non-Parametric
+menuTitle: One-Way ANOVA On Ranks
+menuSubtitle: Kruskal-Wallis
+
+version: '1.0.2'
+jas: '1.2'
+
+description:
+    main: >
+        The Kruskal-Wallis test is used to explore the relationship between a
+        continuous dependent variable, and a categorical explanatory variable.
+        It is analagous to ANOVA, but with the advantage of being
+        non-parametric and having fewer assumptions. However, it has the
+        limitation that it can only test a single explanatory variable at a
+        time. Conover-Iman and Dunn test are available to report results
+        across multiple pairwise comparisons.
+
+    R:
+        dontrun: false
+        usage: |
+            data('ToothGrowth')
+
+            anovaNP(formula = len ~ dose, data=ToothGrowth)
+
+            #
+            #  ONE-WAY ANOVA (NON-PARAMETRIC)
+            #
+            #  Kruskal-Wallis
+            #  ───────────────────────────────
+            #           χ²      df    p
+            #  ───────────────────────────────
+            #    len    40.7     2    < .001
+            #  ───────────────────────────────
+            #
+
+completeWhenFilled: true
+
+formula:
+    deps:
+        from: lhs
+        required: true
+    group:
+        from: rhs
+        subset: 1
+
+options:
+    - name: data
+      type: Data
+      description:
+          R: the data as a data frame
+
+    - name: deps
+      title: Dependent Variables
+      type: Variables
+      required: true
+      suggested:
+        - continuous
+        - ordinal
+      permitted:
+        - numeric
+      rejectInf: false
+      description:
+          ui: >
+            the dependent variables -- a separate test is performed for each
+            dependent variable specified.
+          R: >
+            the dependent variables (not necessary when using a formula, see
+            the examples)
+
+    - name: group
+      title: Grouping Variable
+      type: Variable
+      required: true
+      rejectUnusedLevels: true
+      suggested:
+        - nominal
+        - ordinal
+      permitted:
+        - factor
+      description:
+          R: a string naming the grouping or independent variable in `data`
+
+    - name: jttest
+      title: Jonckhere-Terpstra
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), perform Jonckhere-Terpstra trend test
+
+    - name: dunnpairs
+      title: Dunn's
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), perform Dunn's pairwise comparisons
+
+    - name: coimpairs
+      title: Conover-Iman
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), perform Conover-Iman pairwise comparisons
+
+    - name: dscfpairs
+      title: Dwass-Steel-Critchlow-Flinger
+      type: Bool
+      default: false
+      description:
+          R: >
+            `TRUE` or `FALSE` (default), perform DSCF pairwise comparisons
+
+    - name: postHocCorr
+      title: Post Hoc Correction
+      type: NMXList
+      options:
+        - name: none
+          title: No correction
+        - name: bonf
+          title: Bonferroni
+        - name: sidak
+          title: Sidak
+        - name: holm
+          title: Holm
+      description:
+          ui: >
+            the post-hoc multiple comparisons corrections to use.
+          R: >
+            one or more of `'none'`, `'bonferroni'`, `'sidak'`, and `'holm'`
+            Post Hoc corrections respectively
+
+    - name: miss
+      title: Missing values
+      type: List
+      options:
+        - perAnalysis
+        - listwise
+      default: perAnalysis
+      description:
+          ui: >
+            the missing value exclusion method. `Analysis by analysis`
+            excludes missing values from each analysis. `Listwise` excludes
+            a row from all analyses if one of its values is missing.
+          R: >
+            `'perAnalysis'` or `'listwise'`, how to handle missing
+            values; `'perAnalysis'` excludes missing values for individual
+            dependent variables, `'listwise'` excludes a row from all
+            analyses if one of its entries is missing.
+
+    - name: qq
+      title: Q-Q Plot
+      type: Bool
+      default: false
+      description:
+          ui: >
+            provide Q-Q plots of residuals -- a plot of the actual residuals
+            against what would be expected if the data were *perfectly* normally
+            distributed. Large deviations from the diagonal line suggest the
+            data is not from a normal distribution.
+          R: >
+            `TRUE` or `FALSE` (default), provide a Q-Q plot of residuals
+
+...

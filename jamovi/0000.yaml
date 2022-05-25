@@ -1,0 +1,32 @@
+---
+name: nptests
+title: One-Way ANOVA On Ranks
+version: 0.0.3
+jms: '1.0'
+authors:
+  - Maurizio Agosti
+maintainer: Maurizio Agosti <magosti@gmail.com>
+date: '2021-10-17'
+type: R
+description: >-
+  Example with the Kruskal-Wallis test, Jonckhere-Terpstra trend test and the
+  post-hoc DSCF, Conover-Iman and Dunn tests.
+analyses:
+  - title: One-Way ANOVA On Ranks
+    name: anovaNP
+    ns: nptests
+    menuGroup: ANOVA
+    menuSubgroup: Non-Parametric
+    menuTitle: One-Way ANOVA On Ranks
+    menuSubtitle: Kruskal-Wallis
+    description: >
+      The Kruskal-Wallis test is used to explore the relationship between a
+      continuous dependent variable, and a categorical explanatory variable. It
+      is analagous to ANOVA, but with the advantage of being non-parametric and
+      having fewer assumptions. However, it has the limitation that it can only
+      test a single explanatory variable at a time. Conover-Iman and Dunn test
+      are available to report results across multiple pairwise comparisons.
+usesNative: true
+minApp: 1.0.8
+
+...

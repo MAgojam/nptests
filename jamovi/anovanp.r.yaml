@@ -1,0 +1,265 @@
+---
+name:  anovaNP
+title: One-Way ANOVA On Ranks
+jrs: '1.0'
+
+items:
+    - name: kwTable
+      title: Kruskal-Wallis
+      type: Table
+      description: a table of the test results
+      rows: (deps)
+      clearWith:
+        - group
+        - miss
+
+      columns:
+        - name: name
+          title: ""
+          content: ($key)
+          type: text
+
+        - name: stat
+          superTitle: Statistic
+          combineBelow: true
+          title: H
+          type: number
+
+        - name: sties
+          superTitle: Statistic
+          combineBelow: true
+          title: H/<sub>ties</sub>
+          type: number
+
+        - name: df
+          title: df
+          type: integer
+
+        - name: pval
+          title: p
+          type: number
+          format: zto,pvalue
+
+        - name: es
+          title: ε²
+          type: number
+
+
+    - name: jtTable
+      title: Jonckhere-Terpstra
+      type: Table
+      description: a table of the test results
+      rows: (deps)
+      visible: (jttest)
+      clearWith:
+        - group
+        - miss
+
+      columns:
+        - name: name
+          title: ""
+          content: ($key)
+          type: text
+
+        - name: stat
+          title: T<sub>JT</sub>
+          type: number
+
+        - name: seval
+          title: SE
+          type: number
+
+        - name: zval
+          title: z
+          type: number
+
+        - name: pval
+          superTitle: Alternative Hypothesis
+          combineBelow: true
+          title: two.sided
+          type: number
+          format: zto,pvalue
+
+        - name: pvald
+          superTitle: Alternative Hypothesis
+          combineBelow: true
+          title: decreasing
+          type: number
+          format: zto,pvalue
+          
+        - name: pvali
+          superTitle: Alternative Hypothesis
+          combineBelow: true
+          title: increasing
+          type: number
+          format: zto,pvalue
+
+
+    - name: postHoc
+      title: Post Hoc Tests
+      type: Array
+      description: an array of pairwise comparison tables
+      items: (deps)
+      visible: (dscfpairs || dunnpairs || coimpairs)
+      clearWith:
+        - group
+        - miss
+
+      template:
+        title: Post Hoc Comparisons - $key
+        type: Table
+        rows: (pairs)
+        
+        columns:
+          - name: pair1
+            title: ""
+            content: ($key)
+            type: text
+            combineBelow: true
+            visible: (dscfpairs || dunnpairs || coimpairs)
+          - name: pair2
+            title: ""
+            type: text
+            visible: (dscfpairs || dunnpairs || coimpairs)
+
+          - name: test[dunn]
+            title: ""
+            content: Dunn's z
+            type: text
+            combineBelow: true
+            visible: (dunnpairs)
+          - name: stat[dunn]
+            title: Statistic
+            type: number
+            visible: (dunnpairs)
+          - name: pval[dunn]
+            title: p
+            type: number
+            format: zto,pvalue
+            visible: (dunnpairs)
+
+          - name: pnone[dunn]
+            title: p<sub>none</sub>
+            type: number
+            format: zto,pvalue
+            visible: (dunnpairs && postHocCorr:none)
+          - name: pbonf[dunn]
+            title: p<sub>bonferroni</sub>
+            type: number
+            format: zto,pvalue
+            visible: (dunnpairs && postHocCorr:bonf)
+          - name: psidak[dunn]
+            title: p<sub>sidak</sub>
+            type: number
+            format: zto,pvalue
+            visible: (dunnpairs && postHocCorr:sidak)
+          - name: pholm[dunn]
+            title: p<sub>holm</sub>
+            type: number
+            format: zto,pvalue
+            visible: (dunnpairs && postHocCorr:holm)
+
+
+          - name: test[coim]
+            title: ""
+            content: Conover-Iman t
+            type: text
+            combineBelow: true
+            visible: (coimpairs)
+          - name: stat[coim]
+            title: Statistic
+            type: number
+            visible: (coimpairs)
+          - name: pval[coim]
+            title: p
+            type: number
+            format: zto,pvalue
+            visible: (coimpairs)
+
+          - name: pnone[coim]
+            title: p<sub>none</sub>
+            type: number
+            format: zto,pvalue
+            visible: (coimpairs && postHocCorr:none)
+          - name: pbonf[coim]
+            title: p<sub>bonferroni</sub>
+            type: number
+            format: zto,pvalue
+            visible: (coimpairs && postHocCorr:bonf)
+          - name: psidak[coim]
+            title: p<sub>sidak</sub>
+            type: number
+            format: zto,pvalue
+            visible: (coimpairs && postHocCorr:sidak)
+          - name: pholm[coim]
+            title: p<sub>holm</sub>
+            type: number
+            format: zto,pvalue
+            visible: (coimpairs && postHocCorr:holm)
+
+
+          - name: test[dscf]
+            title: ""
+            content: DSCF q
+            type: text
+            combineBelow: true
+            visible: (dscfpairs)
+          - name: stat[dscf]
+            title: Statistic
+            type: number
+            visible: (dscfpairs)
+          - name: pval[dscf]
+            title: p
+            type: number
+            format: zto,pvalue
+            visible: (dscfpairs)
+
+          - name: pnone[dscf]
+            title: p<sub>none</sub>
+            type: number
+            combineBelow: true
+            format: zto,pvalue
+            visible: (dscfpairs && postHocCorr:none)
+          - name: pbonf[dscf]
+            title: p<sub>bonferroni</sub>
+            type: number
+            combineBelow: true
+            format: zto,pvalue
+            visible: (dscfpairs && postHocCorr:bonf)
+          - name: psidak[dscf]
+            title: p<sub>sidak</sub>
+            type: number
+            combineBelow: true
+            format: zto,pvalue
+            visible: (dscfpairs && postHocCorr:sidak)
+          - name: pholm[dscf]
+            title: p<sub>holm</sub>
+            type: number
+            combineBelow: true
+            format: zto,pvalue
+            visible: (dscfpairs && postHocCorr:holm)
+
+    - name: plots
+      title: Plots
+      type: Array
+      description: an array of groups of plots
+      items: (deps)
+      clearWith:
+        - group
+        - miss
+      template:
+          title: $key
+          type: Group
+          items:
+
+            - name: qq
+              type: Image
+              description: Q-Q plot
+              width: 600
+              height: 400
+              requiresData: true
+              visible: (qq)
+              renderFun: .qq
+              clearWith: []
+
+...

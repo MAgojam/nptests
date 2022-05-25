@@ -1,0 +1,24 @@
+Package: nptests
+Type: Package
+Title: One-Way ANOVA On Ranks
+Version: 0.0.3
+Date: 2021-10-17
+Author: Maurizio Agosti
+Maintainer: Maurizio Agosti <magosti@gmail.com>
+Description: Kruskal-Wallis test, Jonckhere-Terpstra trend test and
+             the post-hoc DSCF, Conover-Iman and Dunn's test.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Depends:
+    R (>= 4.0.0)
+Imports:
+    jmvcore (>= 2.3),
+    R6,
+    magrittr,
+    ggplot2
+Suggests:
+    dplyr,
+    tidyr,
+    tibble
+RoxygenNote: 7.1.1
